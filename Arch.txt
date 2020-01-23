@@ -1,0 +1,179 @@
+fdisk -l检查状态
+
+cfdisk 选择 gpt 进行分盘
+分一个EFI system
+一个swap
+一个系统
+
+这里假设EFI为sda1
+swap为sda2
+系统盘为sda3
+
+
+再mkfs.ext4 /dev/sda3以ext4格式来格式化
+再mkfs.fat -F32 /dev/sda1以fat格式化
+再mkswap /dev/sda2 格式化swap盘
+接着启用SWAP分区 swapon /dev/sda2
+再挂载linux系统分区到根目录
+mount /dev/sda3 /mnt
+
+然后建立启动目录mkdir -p /mnt/boot/efi
+
+接下来把EFI分区挂载到启动目录下 ： mount /dev/sda1 /mnt/boot/efi
+
+接着使用vim更改镜像源以达到加速目的
+
+vim /etc/pacman.d/mirrorlist
+
+
+接着再安装系统pacstrap /mnt base linux base-devel
+输入genfstab /mnt >> /mnt/etc/fstab
+
+
+安装之后输入arch-chroot /mnt 离开liveCD切换到linux系统
+
+用包管理器pacman下载个vim或neovim方便调试下载dhcpcd不然重启以后无法动态分配IP而导致无法安装桌面环境再下个intel-ucode(不是intel U不用下)双系统需求下os-prober
+必须下efibootmgr 和 grub
+
+输入grub-install --force --recheck /dev/sda
+grub-mkconfig -o /boot/grub/grub.cfg
+键入systemctl enable dhcpcd.service来获取dhcp动态分配ip地址服务
+再输入exit退出系统
+使用umount -R /mnt卸载已挂载的分区
+使用reboot重启
+
+重启后输入root得到root权限
+
+设置密码 passwd
+再输入密码
+创建用户useradd -m -s /bin/bash 用户名
+输入passwd 用户名来设置用户密码
+
+
+
+输入pacman -S xorg xterm xorg-xinit sddm wqy-zenhei wqy-microhei plasma kde-applications xdg-user-dirs坐等下载
+
+下载完成之后开启服务
+xdg-user-dirs-update
+
+sddm --example-config >/etc/sddm.conf
+
+systemctl enable sddm.service
+
+
+
+
+
+
+
+
+无法更改分辨率解决方案
+1.pacman -S xorg xorg-xinit xf86-video-vesa xf86-video-vmware  xf86-input-vmmouse open-vm-tools gtkmm
+
+2.systemctl enable vmtoolsd.service vmware-vmblock-fuse.service
+
+3.reboot
+
+
+vmware tools快速安装： 1.git clone https://github.com/rasa/vmware-tools-patches.git
+2.cd vmware-tools-patches
+3.   ./patched-open-vm-tools.sh
+
+git无法安装出现443解决方案：
+设置git 账号密码
+git config --global --unset http.proxy
+git config --global --unset https.proxy
+
+
+
+
+输入法问题：pacman -S fcitx fcitx-im fcitx-configtool
+reboot
+
+
+
+中文字体设置：vim /etc/locale.gen找到en_US.UTF-8和zh_CN.UTF-8去掉#:wq
+再刷新区域信息locale-gen
+将区域信息写入locale.conf文件：echo LANG=en_US.UTF-8 > /etc/locale.conf
+需要说明：这里可以设置成中文，但是locale.conf文件是全局设置，在这里设成中文或者其他非英语环境，桌面环境下会正常显示，但是命令行模式下会变成乱码。中文的问题在后面用其他方法解决。
+
+
+时区设置：ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
+hwclock --systohc --utc
+
+timedatectl set-ntp true
+
+
+系统本地化设置：
+至少需要一种中文字体：pacman -S wqy-microhei
+vim ~/.xprofile
+输入
+export LANG=zh_CN.UTF-8
+
+export LANGUAGE=zh_CN:en_US
+
+export LC_CTYPE=en_US.UTF-8
+
+再cp ~/.xprofile /home/你的用户名
+
+
+
+pacman删除
+删除单个软件包，保留其全部已经安装的依赖关系
+pacman -R package_name
+删除指定软件包，及其所有没有被其他已安装软件包使用的依赖关系：
+pacman -Rs package_name
+要删除软件包和所有依赖这个软件包的程序:
+# pacman -Rsc package_name
+警告: 此操作是递归的，请小心检查，可能会一次删除大量的软件包。
+要删除软件包，但是不删除依赖这个软件包的其他程序：
+# pacman -Rdd package_name
+pacman 删除某些程序时会备份重要配置文件，在其后面加上*.pacsave扩展名。-n 选项可以删除这些文件：
+pacman -Rn package_name
+pacman -Rsn package_name
+
+用pacman应该就可以了
+
+
+
+-------------------------------------------------------------
+
+超级重要：：：：：：：：：：系统修复：：：：：：：：：
+无法开机显示can't access tty job control turned off
+
+可使用fsck手动修复
+
+格式:::::::::fsck.ext4 /dev/损坏的分区(ext4为文件系统)
+一路yes
+
+重启
+
+
+成功！！！
+
+-------------------------------------------------------------
+
+
+AUR的使用
+
+编辑/etc/pacman.conf  with your favorite editor
+
+在文件最后添加如下内容：
+
+[archlinuxcn]
+
+SigLevel = Optional TrustedOnly
+
+Server = http://mirrors.163.com/archlinux-cn/$arch
+
+保存退出刷新pacman数据库   sudo pacman -Syy
+
+
+安装中文源密钥：
+
+sudo pacman -S archlinuxcn-keyring
+
+安装yaourt:
+
+sudo pacman -S yaourt
