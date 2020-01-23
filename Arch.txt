@@ -95,13 +95,42 @@ vmware tools快速安装： 1.git clone https://github.com/rasa/vmware-tools-pat
 2.cd vmware-tools-patches
 3.   ./patched-open-vm-tools.sh
 
+
+
+
+-------------------------------------------------------------
 git无法安装出现443解决方案：
 设置git 账号密码
 git config --global --unset http.proxy
 git config --global --unset https.proxy
 
+OR:
 
 
+vim /etc/hosts
+
+输入：
+
+127.0.0.1 localhost
+::1 localhost
+127.0.1.1 a.localdomain a（原有hosts配置）
+
+
+192.30.253.112 github.com
+
+151.101.88.249 github.global.ssl.fastly.net
+192.30.253.113    github.com
+192.30.252.131 github.com
+185.31.16.185 github.global.ssl.fastly.net
+74.125.237.1 dl-ssl.google.com
+173.194.127.200 groups.google.com
+192.30.252.131 github.com
+185.31.16.185 github.global.ssl.fastly.net
+74.125.128.95 ajax.googleapis.com
+151.101.76.249 http://global-ssl.fastly.net
+192.30.255.112 http://github.com  #此处112还是113根据自己的情况调整？
+
+----------------------------------------------------------
 
 输入法问题：pacman -S fcitx fcitx-im fcitx-configtool
 reboot
@@ -200,4 +229,16 @@ sudo pacman -S yaourt
 Yaourt 不可使用可以更换镜像源再 sudo pacman -Syy
 
 
+vim-Plug安装：
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+使用：
+call plug#begin('~/.vim/plugged')
 
+Plug 'vim-airline/vim-airline'
+
+call plug#end()
+
+
+命令：PlugInstall
+PlugClean
