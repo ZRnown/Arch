@@ -32,8 +32,11 @@ vim /etc/pacman.d/mirrorlist
 
 安装之后输入arch-chroot /mnt 离开liveCD切换到linux系统
 
+
 用包管理器pacman下载个vim或neovim方便调试下载dhcpcd不然重启以后无法动态分配IP而导致无法安装桌面环境再下个intel-ucode(不是intel U不用下)双系统需求下os-prober
 必须下efibootmgr 和 grub
+
+
 
 输入grub-install --force --recheck /dev/sda
 grub-mkconfig -o /boot/grub/grub.cfg
@@ -42,12 +45,25 @@ grub-mkconfig -o /boot/grub/grub.cfg
 使用umount -R /mnt卸载已挂载的分区
 使用reboot重启
 
+
+-----------安装后配置--------------
+
 重启后输入root得到root权限
 
 设置密码 passwd
 再输入密码
 创建用户useradd -m -s /bin/bash 用户名
 输入passwd 用户名来设置用户密码
+
+
+创建hostname：
+
+vim /etc/hostname
+输入hostname
+
+127.0.0.1 localhost
+::1 localhost
+127.0.1.1 主机名.localdomain 主机名
 
 
 
@@ -177,3 +193,11 @@ sudo pacman -S archlinuxcn-keyring
 安装yaourt:
 
 sudo pacman -S yaourt
+
+
+
+
+Yaourt 不可使用可以更换镜像源再 sudo pacman -Syy
+
+
+
