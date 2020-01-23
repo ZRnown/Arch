@@ -25,6 +25,19 @@ set history=1000
 set nu! " 显示行号
 syntax on " 代码高亮
 set ts=4 " 设置tab键为四个空格
+set scrolloff=5
+set showmatch
+set spell spelllang=en_us
+set wildmenu
+set wildmode=longest:list,full
+autocmd BufWritePost $MYVIMRC source $MYVIMRC
+let g:deoplete#enable_at_startup = 1
+
+
+
+
+
+
 
 "nerdtree配置
 let NERDTreeHighlightCursorline = 1       " 高亮当前行
@@ -137,7 +150,6 @@ let g:NERDTreeExtensionHighlightColor['c++'] = s:green " sets the color of c++ f
 
 
 
-
 "插件安装
 call plug#begin('~/.vim/plugged')
 Plug 'mhinz/vim-startify'
@@ -148,10 +160,15 @@ Plug 'morhetz/gruvbox'
 Plug 'scrooloose/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'scrooloose/nerdcommenter'
+Plug 'tmhedberg/SimpylFold'
+Plug 'vim-airline/vim-airline-themes'
 
 call plug#end()
 "插件安装结束
 "主题配置
 colorscheme gruvbox
 set background=dark
+let g:airline_theme='deus'
 "主题配置结束
+
