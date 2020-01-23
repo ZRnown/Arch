@@ -100,12 +100,23 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias vz="vim ~/.zshrc"
-alias vv="vim ~/.vimrc"
+export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
+export FZF_DEFAULT_COMMAND='fd --type file'
+export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
+export FZF_ALT_C_COMMAND="fd -t d . "
+
+
+
+
+
+
+
+alias vz="nvim ~/.zshrc"
+alias vv="nvim ~/.config/nvim/init.vim"
 alias r="ranger"
 alias pac="sudo pacman -S"
 alias v="nvim"
 alias ll="ls -l"
 alias la="ls -a"
-
-
+alias f="fzf"
+alias a="python3"
