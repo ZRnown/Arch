@@ -84,7 +84,6 @@ systemctl enable sddm.service
 
 
 
-
 无法更改分辨率解决方案
 1.pacman -S xorg xorg-xinit xf86-video-vesa xf86-video-vmware  xf86-input-vmmouse open-vm-tools gtkmm
 
@@ -245,6 +244,7 @@ call plug#end()
 PlugClean
 
 
+我装过的工具：ranger zsh git neovim yum yay yaourt oh-my-zsh fzf 
 
 
 
@@ -263,6 +263,69 @@ vim /etc/resolv.conf
 8.8.8.8 
 
 
+
+Git须知:
+git init
+git add 文件名
+git commit -m "Description" 文件名
+git status
+git remote add origin 仓库地址
+git pull --rebase origin master
+git push origin master
+git rm --cache 文件名  删除缓存区内容
+
+
+
+
+
+
+
+SSR须知:
+安装：
+# 需要本地git 环境
+yum install -y git
+git clone https://github.com/SAMZONG/gfwlist2privoxy.git
+cd gfwlist2privoxy/
+mv ssr /usr/local/bin
+chmod +x /usr/local/bin/ssr
+
+
+ssr install
+
+
+启动/关闭
+ssr start
+ssr stop
+
+
+
+
+[root@localhost ~]# ssr config 		# 配置文件路径 /usr/local/share/shadowsocksr/config.json
+{
+    "server": "0..0.0.0",	// ssr服务器ip
+    "server_ipv6": "::",
+    "server_port": 8080,	// ssr服务器端口
+    "local_address": "127.0.0.1",
+    "local_port": 1080,
+
+    "password": "123456",		// 对应password
+    "method": "none",			// 这里对应SSGlobal配置中的Encryption
+    "protocol": "auth_chain_a",		//对应protocl
+    "protocol_param": "",
+    "obfs": "http_simple",		//对应obfs
+    "obfs_param": "hello.world",	//对应obfs_param
+    "speed_limit_per_con": 0,
+    "speed_limit_per_user": 0,
+
+    "additional_ports" : {}, // only works under multi-user mode
+    "additional_ports_only" : false, // only works under multi-user mode
+    "timeout": 120,
+    "udp_timeout": 60,
+    "dns_ipv6": false,
+    "connect_verbose_info": 0,
+    "redirect": "",
+    "fast_open": false
+}
 
 
 
