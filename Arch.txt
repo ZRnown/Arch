@@ -264,16 +264,6 @@ vim /etc/resolv.conf
 
 
 
-Git须知:
-git init
-git add 文件名
-git commit -m "Description" 文件名
-git status
-git remote add origin 仓库地址
-git pull --rebase origin master
-git push origin master
-git rm --cache 文件名  删除缓存区内容
-
 
 
 
@@ -347,6 +337,14 @@ select disk 2选择到你的U盘
 之后再格式化磁盘
 成功！
 
+Git须知:
+git init
+git add 文件名
+git commit -m "Description" 文件名
+git remote add origin 仓库地址
+git pull --rebase origin master
+git push origin master
+
 
 
 git须知：
@@ -354,6 +352,9 @@ git须知：
 git init 
 添加要提交的文件:
 git add 文件名
+git rm --cache 文件名  删除缓存区内容
+查看当前缓存区状态
+git status
 本次提交说明:
 git commit -m "Description" 文件名
 推送本次提交到仓库:
