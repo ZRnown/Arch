@@ -1,35 +1,70 @@
-# Arch的学习使用心得(包括git和小部分manjaro)
+# Arch的学习使用心得
 
 ### 废话
 
 
-
-&emsp;&emsp;前几天看一些大佬用Vim感觉好爽的样子，劈里啪啦的命令行上输一大堆，就感觉Linux好有趣的样子，于是就试着在虚拟机上装一些Linux，Centos Kali Arch manjaro Ubuntu啊啥的感觉确实很有趣。
+&emsp;&emsp;以前看一些大佬用Vim感觉好爽的样子，劈里啪啦的命令行上输一大堆，就感觉Linux好有趣的样子，于是就试着在虚拟机上装一些Linux，Centos Kali Arch manjaro Ubuntu啊啥的感觉确实很有趣。
 <br/>
 
 输个sudo apt-get install XXX或sudo pacman -S XXX 看着一堆小进度条在窗口上滑啊滑感觉特别爽。
 于是就想着装个实体机玩玩，但是家里没有多余的电脑，于是就想装个双系统。
 <br/>
 
-中间也遇到了特别多的错误，经过大量的查资料看wiki问大佬，解决了很多问题。**其中一个还让我卡了五天!难受死**所以说在这里把它给总结出来，以后再装会比较容易一些，也会有个参照。
+中间也遇到了特别多的错误，经过大量的查资料看wiki问大佬，解决了很多问题。**其中一个还让我卡了五天!难受死**所以说在这里把它给总结出来，以后再有问题会比较容易一些，也会有个参照。
 
 ---
 
-## 安装篇
+### 目录
+1. [前言](#前言)
+    1. [参考文献](#参考文献)
+2. [安装篇](#安装篇)
+    1. [下载系统镜像和磁盘刻录工具](#下载系统镜像和磁盘刻录工具)
+    2. [制作系统安装介质](#制作系统安装介质)
+    3. [查看主板热键](#查看主板热键)
+    4. [将磁盘分区](#将磁盘分区)
+    5. [格式化分区](#格式化分区)
+3. [配置篇](#配置篇)
+    1. [设置](#设置篇)
+    2. [虚拟机无法更改分辨率解决方案](#虚拟机无法更改分辨率解决方案)
+    3. [中文字体设置](#中文字体设置)
+    4. [时区设置](#时区设置)
+    5. [系统本地化设置](#系统本地化设置)
+    6. [桌面环境安装](#桌面环境安装)
+    7. [vmware&nbsp;tools快速安装](#vmware&nbsp;tools快速安装)
+4. [疑难解答篇](#疑难解答篇)
+    1. [U盘启动盘如何恢复原样](#U盘启动盘如何恢复原样)
+    2. [git出现443解决方案](#git出现443解决方案)
+    3. [开机显示can't access tty job control turned off，无法进入图形化界面](#开机显示can't&nbsp;access&nbsp;tty&nbsp;job&nbsp;control&nbsp;turned&nbsp;off，无法进入图形化界面)
+    4. [换源不生效，pacman -Syy速度小于4K/s](#换源不生效，pacman&nbsp;-Syy速度小于4K/s)
+5. [使用方法篇](#使用方法篇)
+    1. [pacman删除软件包](#pacman删除软件包)
+    2. [AUR的使用](#AUR的使用)
+    3. [SSR须知](#SSR须知)
+    4. [git须知](#git须知)
 
-   >参考文献 : 
-   <br/>
-   https://wenku.baidu.com/view/37c420a75fbfc77da269b18e.html
-   https://www.cnblogs.com/yuanchao-blog/p/11730296.html
-   https://www.cf673.com/post/144.html
+6. [美化篇](#美化篇)
+    1. [vim-Plug安装](#vim-Plug安装)
+
+7. [插件推荐篇](#插件推荐篇)
+    1. [Markdown All in One](#Markdown&nbsp;All&nbsp;in&nbsp;One)
+
+---
         
+### 前言：
+##### &emsp;&emsp;这里讲一下哦，这篇文章是我使用Arch的经验总结，也是分享给还不会使用Arch的小白的，应该是比较详细的，比较适合什么都不懂的真小白，配有图文。但可能有一些错误，希望懂的大佬能够指出，谢谢！
+#### 参考文献 : 
+   1. https://wenku.baidu.com/view/37c420a75fbfc77da269b18e.html
+   2. https://www.cnblogs.com/yuanchao-blog/p/11730296.html
+   3. https://www.cf673.com/post/144.html
+   4. https://www.jianshu.com/p/a2d2f284fc0a
 
-##### 这里讲一下哦，这篇文章是我安装Arch的经验总结，也是分享给还不会安装Arch的小白的，应该是比较详细的，比较适合什么都不懂的真小白，配有图文。但可能有一些错误，希望懂的大佬能够指出，谢谢！
-
+## 安装篇
 
 >你需要的工具：一个4G或4G以上的U盘，一台能联网的电脑。
 
 如果没有U盘可以去买一个，不是怎么贵，几包方便面的价钱。(废话，逃...)
+
+#### 下载系统镜像和磁盘刻录工具 
 
 首先，你得去[Archlinux](http://blog.leanote.com/freewalk)官网下载页面下载。如下图：
 ![1nOaan.md.png](https://s2.ax1x.com/2020/01/27/1nOaan.md.png)
@@ -45,7 +80,7 @@
 在你的Archlinux下载完毕后，你会发现有一个iso镜像文件，大概是这个样子，上头命名的格式为 **名称-发布时间-支持位数.文件后缀**(下面那个文件是我之前下的manjaro，不要在意)
 
 ![1nXezT.png](https://s2.ax1x.com/2020/01/27/1nXezT.png)
-
+#### 制作系统安装介质
 这时候你要 插入♂ 你的U盘，不要太用力，主机和U盘会很爽♂的。然后你需要打开你的USBWriter(咱刚下的内个，我用USBWriter来演示)或者rufus。
 
 再看着这个图片，首先我们要点那个浏览，然后选中你刚才下载的iso镜像文件。然后再点一下目标设备那个框框最右边的小玩意，然后下面应该能看到你的U盘。
@@ -57,7 +92,7 @@
 做好之后，你可能发现你的电脑识别不出你的U盘了，你也不要惊慌，虽然我也不知道啥回事儿。。。但没啥大问题
 
 ![1njIDe.png](https://s2.ax1x.com/2020/01/27/1njIDe.png)
-
+#### 查看主板热键
 然后你要明白一个东西。你的主板进入系统U盘的方式，你必须要知道你的主板是什么牌子的，查看方法：使用组合键win + r(win就是你键盘下面有着windows logo的玩意儿)输入dxdiag，确定。
 
 然后就会蹦出来DirectX诊断工具，在DirectX诊断工具页面中，就可以看到主板型号，主板BIOS版本信息就是主板相关信息。
@@ -74,11 +109,11 @@
 
 ![1nzFXT.jpg](https://s2.ax1x.com/2020/01/27/1nzFXT.jpg)
 
-完事儿以后，你会看到Archlinux的安装界面，选第一个。选完之后它会跳出来一堆一堆的字儿，我感觉看着挺爽。
+完事儿以后，你会看到Archlinux的安装界面，选第一个(键盘Enter选择，小键盘上下移动)。选完之后它会跳出来一堆一堆的字儿，我感觉看着挺爽。
 
 ![1nz3nO.png](https://s2.ax1x.com/2020/01/27/1nz3nO.png)
 
-稀里哗啦的字儿跳完之后，你会来到这样一个界面，他叫liveCD。
+稀里哗啦的字儿跳完之后，你会来到这样一个界面，这叫liveCD。
 
 ![1nzQc6.png](https://s2.ax1x.com/2020/01/27/1nzQc6.png)
 
@@ -86,19 +121,64 @@
 
 ![1nzljK.png](https://s2.ax1x.com/2020/01/27/1nzljK.png)
 
-输入cfdisk 选择 gpt 进行分区(cfdisk是一个图形化的分区工具，对新手友好)
-
-
-
-分一个EFI system
+##### 将磁盘分区
+接下来的操作就是让你分几个区
+我们这里要分一个EFI system
 一个swap
-一个系统
+一个系统盘
 
-这里假设EFI为sda1
-swap为sda2
+>EFI system : EFI是引导分区，它在你磁盘的最前面，每次开机最先被磁头读写到。我把Archlinux比作景点，引导分区比作导游，你想要进入景点必须要有导游带着你啊对吧。在你电脑开机以后，你的导游(引导分区)带你进景点(Archlinux)。如果没有导游你就无法进入景区，那你就开不了机咯，简单易懂。
+
+
+>Swap : Swap分区（即交换区）在系统的物理内存不够用的时候，把硬盘空间中的一部分空间释放出来，以供当前运行的程序使用。那些被释放的空间可能来自一些很长时间没有什么操作的程序，这些被释放的空间被临时保存到Swap分区中，等到那些程序要运行时，再从Swap分区中恢复保存的数据到内存中。
+转自:https://www.jianshu.com/p/a2d2f284fc0a； 作者：jnxc1888 来源：简述
+
+>系统盘：那系统盘当然是存放你使用的软件和系统的咯
+
+输入cfdisk 选择你的磁盘 再选择 gpt 进行分区(cfdisk是一个图形化的分区工具，对新手友好，如果你只有一个硬盘，就直接输入cfdisk)
+
+
+如果你有多个磁盘但不知道你的磁盘是哪个。
+
+可以分为两种情况：
+1. 你准备装双系统，有两个及以上的磁盘。
+2. 你刚买的电脑，电脑还没有系统，磁盘是空的。
+
+
+>如果你是情况一那你可以输入：
+
+>ls /dev&emsp;&emsp;#我这里解释一下命令ls是查看后面那个文件下的文件的，在linux中常用/dev (device) 来存放设备文件，比如磁盘 打印机啥的，所以ls /dev的意思就是查看用于存放设备文件的目录下的所有目录
+
+进行查看，像那些sda,sdb,sdc的就是你的磁盘了，你可以再输入"cfdisk sda"或"cfdisk sdb"...以此类推。
+
+一个一个地来试，哪个盘有上有写Freespace，那么那个区就是你之前再windows上压缩的区。
+
+>(名称含义:sda是第一个磁盘，sdb是第二个磁盘，以此类推，sda1是sda磁盘的第一个分区sdb2是sdb磁盘的第二个分区，以此类推)
+
+>如果你是第二种情况
+
+如果你直接cfdisk，那么你的指令其实是cfdisk /dev/(你的/dev文件下的第一和磁盘)，也就是说，你只能看到你的第一个磁盘。你也要按着情况一的方式来找到你的其他磁盘，如果你有三个磁盘，那么你的磁盘名就分别是sda sdb sdc以此类推，cfdisk /dev/sda 给你的第一块磁盘分区，cfdisk /dev/sdb就是给你的第二个磁盘分区。
+
+
+这里我把EFI设为sda1,
+swap为sda2,
 系统盘为sda3
 
+看下面的gif动图来跟着我操作，很简单的
 
+![1uFUZ6.gif](https://s2.ax1x.com/2020/01/27/1uFUZ6.gif)
+
+看见了没？以上我首先输入了cfdisk，因为我用的是虚拟机只有一个磁盘，你有多个磁盘的话就先查看一下在cfdisk /dev/你的磁盘名。
+
+然后我又选择了gpt，接着我new了一个分区，想用于引导系统，但是此时它只是一个普通的linux区，所以你要更改他的类别，选择Type，再选择EFI system。
+
+接着你需要再分一个swap和一个系统盘。
+
+最后不要选择每个分区再选择write输入yes并回车。
+
+分完三个区就可以Quit来退出了！
+
+#### 格式化分区
 再mkfs.ext4 /dev/sda3以ext4格式来格式化
 再mkfs.fat -F32 /dev/sda1以fat格式化
 再mkswap /dev/sda2 格式化swap盘
@@ -135,7 +215,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 使用reboot重启
 
 
-## 安装后配置
+## 配置篇
 
 重启后输入root得到root权限
 
@@ -154,7 +234,40 @@ vim /etc/hostname
 ::1 localhost
 127.0.1.1 主机名.localdomain 主机名
 
+#### 中文字体设置
 
+vim /etc/locale.gen找到en_US.UTF-8和zh_CN.UTF-8去掉#:wq
+
+再刷新区域信息locale-gen
+
+将区域信息写入locale.conf文件：echo LANG=en_US.UTF-8 > /etc/locale.conf
+
+需要说明：这里可以设置成中文，但是locale.conf文件是全局设置，在这里设成
+中文或者其他非英语环境，桌面环境下会正常显示，但是命令行模式下会变成乱码。中文的问题在后面用其他方法解决。
+
+
+#### 时区设置
+
+ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
+hwclock --systohc --utc
+
+timedatectl set-ntp true
+
+
+#### 系统本地化设置
+至少需要一种中文字体：pacman -S wqy-microhei
+vim ~/.xprofile
+输入
+export LANG=zh_CN.UTF-8
+
+export LANGUAGE=zh_CN:en_US
+
+export LC_CTYPE=en_US.UTF-8
+
+再cp ~/.xprofile /home/你的用户名
+
+#### 桌面环境安装
 
 输入pacman -S xorg xterm xorg-xinit sddm wqy-zenhei wqy-microhei plasma kde-applications xdg-user-dirs坐等下载
 
@@ -165,6 +278,14 @@ sddm --example-config >/etc/sddm.conf
 
 systemctl enable sddm.service
 
+#### vmware&nbsp;tools快速安装：
+
+1. git clone https://github.com/rasa/vmware-tools-patches.git
+2. cd vmware-tools-patches
+3. ./patched-open-vm-tools.sh
+
+
+## 疑难解答篇
 
 ### U盘启动盘如何恢复原样：
 Windows中右键此电脑，选择管理，打开磁盘管理，在右下角记住你的U盘的名称，假设我的U盘是磁盘2
@@ -175,9 +296,6 @@ select disk 2选择到你的U盘
 之后再格式化磁盘
 成功！
 
-# 问题答疑篇
-
-
 ### 虚拟机无法更改分辨率解决方案
 1.pacman -S xorg xorg-xinit xf86-video-vesa xf86-video-vmware  xf86-input-vmmouse open-vm-tools gtkmm
 
@@ -186,16 +304,8 @@ select disk 2选择到你的U盘
 3.reboot
 
 
-### vmware tools快速安装：
-1.git clone https://github.com/rasa/vmware-tools-patches.git
-2.cd vmware-tools-patches
-3.   ./patched-open-vm-tools.sh
 
-
-
-
-
-### git无法安装出现443解决方案：
+### git出现443解决方案：
 先设置git 账号密码
 git config --global --unset http.proxy
 git config --global --unset https.proxy
@@ -211,9 +321,7 @@ vim /etc/hosts
 ::1 localhost
 127.0.1.1 a.localdomain a（原有hosts配置）
 
-
 192.30.253.112 github.com
-
 151.101.88.249 github.global.ssl.fastly.net
 192.30.253.113    github.com
 192.30.252.131 github.com
@@ -224,40 +332,44 @@ vim /etc/hosts
 185.31.16.185 github.global.ssl.fastly.net
 74.125.128.95 ajax.googleapis.com
 151.101.76.249 http://global-ssl.fastly.net
-192.30.255.112 http://github.com  #此处112还是113根据自己的情况调整？
+192.30.255.112 http://github.com  #此处112还是113根据自己的情况调整 方法(ping 一下github，会有显示)
 
 
 
+### 开机显示can't&nbsp;access&nbsp;tty&nbsp;job&nbsp;control&nbsp;turned&nbsp;off，无法进入图形化界面
+挺重要的之前遇到过三次
 
 
-### 中文字体设置：vim /etc/locale.gen找到en_US.UTF-8和zh_CN.UTF-8去掉#:wq
-再刷新区域信息locale-gen
-将区域信息写入locale.conf文件：echo LANG=en_US.UTF-8 > /etc/locale.conf
-需要说明：这里可以设置成中文，但是locale.conf文件是全局设置，在这里设成中文或者其他非英语环境，桌面环境下会正常显示，但是命令行模式下会变成乱码。中文的问题在后面用其他方法解决。
+可使用fsck手动修复，不过fsck坑比较多，谨慎使用，详细了解命令并慎重考虑后再使用
+
+格式：fsck.ext4 /dev/损坏的分区(ext4为文件系统)
+一路yes
+
+重启
 
 
-### 时区设置：ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-
-hwclock --systohc --utc
-
-timedatectl set-ntp true
-
-
-### 系统本地化设置：
-至少需要一种中文字体：pacman -S wqy-microhei
-vim ~/.xprofile
-输入
-export LANG=zh_CN.UTF-8
-
-export LANGUAGE=zh_CN:en_US
-
-export LC_CTYPE=en_US.UTF-8
-
-再cp ~/.xprofile /home/你的用户名
+成功！！！
 
 
 
-### pacman删除软件包
+### 换源不生效，pacman&nbsp;-Syy速度小于4K/s 
+
+大坑，虽然这个问题真的很简单，但是我就是在这里卡了五天啊！！！！还是一个有过此问题的贴吧hxd教我的=======================================================
+
+**解决方案**：*换DNS*
+
+vim /etc/resolv.conf
+
+>nameserver 223.6.6.6
+
+>nameserver 8.8.8.8 
+
+
+## 使用方法篇
+
+
+
+#### pacman删除软件包
 
 删除单个软件包，保留其全部已经安装的依赖关系
 
@@ -285,25 +397,7 @@ pacman -Rn package_name
 pacman -Rsn package_name
 
 
-
-
-### 开机显示can't access tty job control turned off，无法进入图形化界面
-挺重要的之前遇到过三次
-
-
-可使用fsck手动修复，不过fsck坑比较多，谨慎使用，详细了解命令并慎重考虑后再使用
-
-格式：fsck.ext4 /dev/损坏的分区(ext4为文件系统)
-一路yes
-
-重启
-
-
-成功！！！
-
-
-
-### AUR的使用
+#### AUR的使用
 
 编辑/etc/pacman.conf  with your favorite editor
 
@@ -328,51 +422,9 @@ sudo pacman -S yaourt
 Yaourt 不可使用可以更换镜像源再 sudo pacman -Syy
 
 
-### vim-Plug安装：
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-使用：
-call plug#begin('~/.vim/plugged')
-
-Plug 'vim-airline/vim-airline'
-
-call plug#end()
-
-
-命令：PlugInstall
-PlugClean
-
-
-
-
-
-
-
-
-
-### 换源不生效，pacman -Syy速度小于4K/s 
-
-大坑，虽然这个问题真的很简单，但是我就是在这里卡了五天啊！！！！还是一个有过此问题的贴吧hxd教我的=======================================================
-
-**解决方案**：*换DNS*
-
-vim /etc/resolv.conf
-
->nameserver 223.6.6.6
-
->nameserver 8.8.8.8 
-
-
-
-
-
-
-
-
-
-### SSR须知:
+#### SSR须知
 安装：
-### 需要本地git 环境
+需要本地git 环境
 yum install -y git
 
 git clone https://github.com/SAMZONG/gfwlist2privoxy.git
@@ -425,16 +477,7 @@ ssr stop
 
 
 
-
-
-
-
-
-
-
-
-
-### git须知：
+#### git须知
 初始化为git仓库:
 git init 
 添加要提交的文件:
@@ -470,16 +513,33 @@ git add .
 git commit -m '提交说明'
 
 git push origin master
+## 美化篇
 
 
 
 
-# 写给自己看
+#### vim-Plug安装
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+使用：
+call plug#begin('~/.vim/plugged')
+
+Plug 'vim-airline/vim-airline'
+
+call plug#end()
+
+
+命令：PlugInstall
+PlugClean
+
+
+
+
+## 插件推荐篇
 
 ### 常用vscode插件以及使用方法
 
-#### [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one)
-
+#### Markdown&nbsp;All&nbsp;in&nbsp;One
 支持以下功能 + 快捷键
 
 按下 shift + command + p 可以查看。
@@ -501,7 +561,9 @@ git push origin master
 
 >这个图床挺好用:https://imgchr.com/
 
-一键提交：git add README.md && git commit -m "Arch的安装心得分享" README.md && git push origin master
+一键提交：
+
+git add README.md && git commit -m "Arch的安装心得分享" README.md && git push origin master
 
 
 
