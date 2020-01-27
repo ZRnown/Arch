@@ -487,7 +487,7 @@ git push origin master
 
 我装过的工具：ranger zsh git neovim yum yay yaourt oh-my-zsh fzf 
 
-
+>这个图床挺好用:https://imgchr.com/
 
 
 
