@@ -222,7 +222,6 @@ Server = http://mirrors.163.com/archlinux-cn/$arch
 sudo pacman -S archlinuxcn-keyring
 
 安装yaourt:
-access
 sudo pacman -S yaourt
 
 
@@ -284,3 +283,37 @@ select disk 2选择到你的U盘
 清除成功，再在管理界面右键你的U盘，新建简单卷
 之后再格式化磁盘
 成功！
+
+
+
+git须知：
+初始化为git仓库:
+git init 
+添加要提交的文件:
+git add 文件名
+本次提交说明:
+git commit -m "Description" 文件名
+推送本次提交到仓库:
+git push origin master(分支名)
+关联Github远程仓库：
+git remote add origin 仓库地址（没有添加ssh key建议使用 https地址）
+
+可是当你第一次push的时候一般会遇到如下报错：
+这种错误的主要原因是你的远程仓库的内容有改动但是你本地并没有拉去最新的代码所以会报错。
+$ git push origin master
+To https://github.com/yuanchao614/wecoder.git
+ ! [rejected]        master -> master (non-fast-forward)
+error: failed to push some refs to 'https://github.com/yuanchao614/wecoder.git'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. Integrate the remote changes (e.g.
+hint: 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+
+解决方案： git pull origin master --allow-unrelated-histories
+然后建议做完上一步之后再重新：
+
+git add .
+
+git commit -m '提交说明'
+
+git push origin master
