@@ -179,6 +179,12 @@ swap为sda2,
 分完三个区就可以Quit来退出了！
 
 #### 格式化分区
+首先输入 fdisk -l来查看你的分区情况，然后你可以找到你的分区情况。你可以看见我的是这样的。
+
+<img src="https://s2.ax1x.com/2020/01/27/1umJhV.png" alt="1umJhV.png" border="0" />
+
+看到了吧，我的
+
 再mkfs.ext4 /dev/sda3以ext4格式来格式化
 再mkfs.fat -F32 /dev/sda1以fat格式化
 再mkswap /dev/sda2 格式化swap盘
