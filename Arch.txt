@@ -261,7 +261,7 @@ PlugClean
 
 vim /etc/resolv.conf
 223.6.6.6
-8.8.8.8
+8.8.8.8 
 
 
 
