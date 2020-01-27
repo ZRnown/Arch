@@ -201,7 +201,7 @@ mount /dev/sdb3 /mnt
 
 接着使用vim更改镜像源以达到加速目的
 
-[![Ramc9fdcee5efc1f13c.gif](https://file.moetu.org/images/2020/01/27/Ramc9fdcee5efc1f13c.gif)](https://moetu.org/image/iidEk)
+[![Ramc9fdcee5efc1f13c.md.gif](https://file.moetu.org/images/2020/01/27/Ramc9fdcee5efc1f13c.md.gif)](https://moetu.org/image/iidEk)
 
 vim /etc/pacman.d/mirrorlist
 
