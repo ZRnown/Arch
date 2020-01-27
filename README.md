@@ -501,7 +501,7 @@ git push origin master
 
 >这个图床挺好用:https://imgchr.com/
 
-
+一键提交：git add README.md && git commit -m "Arch的安装心得分享" README.md && git push origin master
 
 
 
