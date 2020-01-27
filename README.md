@@ -1,3 +1,4 @@
+**尚未完成**
 # Arch的学习使用心得
 
 ### 废话
@@ -25,17 +26,17 @@
     5. [格式化分区](#格式化分区)
 3. [配置篇](#配置篇)
     1. [设置](#设置篇)
-    2. [虚拟机无法更改分辨率解决方案](#虚拟机无法更改分辨率解决方案)
-    3. [中文字体设置](#中文字体设置)
-    4. [时区设置](#时区设置)
-    5. [系统本地化设置](#系统本地化设置)
-    6. [桌面环境安装](#桌面环境安装)
-    7. [vmware&nbsp;tools快速安装](#vmware&nbsp;tools快速安装)
+    2. [中文字体设置](#中文字体设置)
+    3. [时区设置](#时区设置)
+    4. [系统本地化设置](#系统本地化设置)
+    5. [桌面环境安装](#桌面环境安装)
+    6. [vmware&nbsp;tools快速安装](#vmware&nbsp;tools快速安装)
 4. [疑难解答篇](#疑难解答篇)
     1. [U盘启动盘如何恢复原样](#U盘启动盘如何恢复原样)
-    2. [git出现443解决方案](#git出现443解决方案)
-    3. [开机显示can't access tty job control turned off，无法进入图形化界面](#开机显示can't&nbsp;access&nbsp;tty&nbsp;job&nbsp;control&nbsp;turned&nbsp;off，无法进入图形化界面)
-    4. [换源不生效，pacman -Syy速度小于4K/s](#换源不生效，pacman&nbsp;-Syy速度小于4K/s)
+    2. [虚拟机无法更改分辨率解决方案](#虚拟机无法更改分辨率解决方案)
+    3. [git出现443解决方案](#git出现443解决方案)
+    4. [开机显示can't access tty job control turned off，无法进入图形化界面](#开机显示can't&nbsp;access&nbsp;tty&nbsp;job&nbsp;control&nbsp;turned&nbsp;off，无法进入图形化界面)
+    5. [换源不生效，pacman -Syy速度小于4K/s](#换源不生效，pacman&nbsp;-Syy速度小于4K/s)
 5. [使用方法篇](#使用方法篇)
     1. [pacman删除软件包](#pacman删除软件包)
     2. [AUR的使用](#AUR的使用)
@@ -181,7 +182,7 @@ swap为sda2,
 #### 格式化分区
 首先输入 fdisk -l来查看你的分区情况，然后你可以找到你的分区情况。你可以看见我的是这样的。
 
-![Snipaste_2020-01-27_17-07-52.png](https://i.loli.net/2020/01/27/fXzlAZEG81I9D3N.png)
+![](https://pic.downk.cc/item/5e2eab732fb38b8c3cacae0e.png)
 
 看到了吧，我的/dev/sdb1是EFI分区；/dev/sdb2是swap分区；/dev/sdb3是系统分区
 
@@ -200,25 +201,45 @@ mount /dev/sdb3 /mnt
 
 接着使用vim更改镜像源以达到加速目的
 
+[![Ramc9fdcee5efc1f13c.th.gif](https://file.moetu.org/images/2020/01/27/Ramc9fdcee5efc1f13c.th.gif)](https://moetu.org/image/iidEk)
+
 vim /etc/pacman.d/mirrorlist
+
+操作：进入文件后按/China 回车 v 然后选择China源的所有， d 然后回到最上面，p。重复操作八次。
+这个是Vim的操作，不懂的话可以百度看看，也就是用到了查找复制粘贴移动
+| 按键   | 功能                                 |
+| ------ | ------------------------------------ |
+| /China | 在文件中查找China                    |
+| v      | 进入可视化模式，移动上下左右可以选中 |
+| d      | 剪切选中的内容                       |
+| p      | 粘贴剪切板内的内容                   |
+| j      | 向下移动                             |
+| k      | 向上移动                             |
+| h      | 向左移动                             |
+| l      | 向右移动                             |
+
 
 
 接着再安装系统pacstrap /mnt base linux base-devel
-输入genfstab /mnt >> /mnt/etc/fstab
+
+需要在网络环境下安装！
+
+安装完成后输入genfstab /mnt >> /mnt/etc/fstab
+
+arch-chroot /mnt 离开liveCD切换到linux系统
 
 
-安装之后输入arch-chroot /mnt 离开liveCD切换到linux系统
-
-
-用包管理器pacman下载个vim或neovim方便调试下载dhcpcd不然重启以后无法动态分配IP而导致无法安装桌面环境再下个intel-ucode(不是intel U不用下)双系统需求下os-prober
+用包管理器pacman下载个vim或neovim方便调试，下载dhcpcd不然重启以后无法动态分配IP而导致没网无法安装桌面环境，再下个intel-ucode(如果你是intel的CPU的话) 有双系统需求要下os-prober
 
 必须下efibootmgr 和 grub
-
-
+```
+pacman -S vim neovim dhcpcd intel-ucode os-prober efibootmgr grub
+```
+安装完成后
 
 输入grub-install --force --recheck /dev/sda
 
-grub-mkconfig -o /boot/grub/grub.cfg
+和grub-mkconfig -o /boot/grub/grub.cfg
 
 输入systemctl enable dhcpcd.service来获取dhcp动态分配ip地址服务
 再输入exit退出系统
@@ -308,7 +329,7 @@ select disk 2选择到你的U盘
 之后再格式化磁盘
 成功！
 
-### 虚拟机无法更改分辨率解决方案
+#### 虚拟机无法更改分辨率解决方案
 1.pacman -S xorg xorg-xinit xf86-video-vesa xf86-video-vmware  xf86-input-vmmouse open-vm-tools gtkmm
 
 2.systemctl enable vmtoolsd.service vmware-vmblock-fuse.service
@@ -317,7 +338,7 @@ select disk 2选择到你的U盘
 
 
 
-### git出现443解决方案：
+#### git出现443解决方案：
 先设置git 账号密码
 git config --global --unset http.proxy
 git config --global --unset https.proxy
@@ -579,7 +600,12 @@ PlugClean
 
 我装过的工具：ranger zsh git neovim yum yay yaourt oh-my-zsh fzf 
 
->这个图床挺好用:https://imgchr.com/
+>这几个图床还挺好用:
+
+1. https://imgchr.com/
+2. https://www.superbed.cn/
+3. https://moetu.org/
+4. https://sm.ms/
 
 一键提交：
 
