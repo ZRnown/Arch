@@ -222,7 +222,7 @@ Server = http://mirrors.163.com/archlinux-cn/$arch
 sudo pacman -S archlinuxcn-keyring
 
 安装yaourt:
-
+access
 sudo pacman -S yaourt
 
 
