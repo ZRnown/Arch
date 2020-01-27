@@ -491,17 +491,23 @@ git commit -m "Description" 文件名
 git push origin master(分支名)
 关联Github远程仓库：
 git remote add origin 仓库地址（没有添加ssh key建议使用 https地址）
-
+用户名git config --global user.name [username]
+邮箱设置git config --global user.email [email]
 可是当你第一次push的时候一般会遇到如下报错：
 这种错误的主要原因是你的远程仓库的内容有改动但是你本地并没有拉去最新的代码所以会报错。
 
 $ git push origin master
 To https://github.com/yuanchao614/wecoder.git
  ! [rejected]        master -> master (non-fast-forward)
+
 error: failed to push some refs to 'https://github.com/yuanchao614/wecoder.git'
+
 hint: Updates were rejected because the tip of your current branch is behind
+
 hint: its remote counterpart. Integrate the remote changes (e.g.
+
 hint: 'git pull ...') before pushing again.
+
 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 
 解决方案： git pull origin master --allow-unrelated-histories
