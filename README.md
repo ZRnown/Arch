@@ -181,20 +181,22 @@ swap为sda2,
 #### 格式化分区
 首先输入 fdisk -l来查看你的分区情况，然后你可以找到你的分区情况。你可以看见我的是这样的。
 
-<img src="https://s2.ax1x.com/2020/01/27/1umJhV.png" alt="1umJhV.png" border="0" />
+![Snipaste_2020-01-27_17-07-52.png](https://i.loli.net/2020/01/27/fXzlAZEG81I9D3N.png)
 
-看到了吧，我的
+看到了吧，我的/dev/sdb1是EFI分区；/dev/sdb2是swap分区；/dev/sdb3是系统分区
 
-再mkfs.ext4 /dev/sda3以ext4格式来格式化
-再mkfs.fat -F32 /dev/sda1以fat格式化
-再mkswap /dev/sda2 格式化swap盘
-接着启用SWAP分区 swapon /dev/sda2
+现在要mkfs.ext4 /dev/sdb3以ext4格式来格式化系统分区
+mkfs.fat -F32 /dev/sdb1以fat格式化EFI分区
+再mkswap /dev/sdb2 格式化swap盘
+接着启用SWAP分区 swapon /dev/sdb2
+
 再挂载linux系统分区到根目录
-mount /dev/sda3 /mnt
+
+mount /dev/sdb3 /mnt
 
 然后建立启动目录mkdir -p /mnt/boot/efi
 
-接下来把EFI分区挂载到启动目录下 ： mount /dev/sda1 /mnt/boot/efi
+接下来把EFI分区挂载到启动目录下 ： mount /dev/sdb1 /mnt/boot/efi
 
 接着使用vim更改镜像源以达到加速目的
 
@@ -209,15 +211,20 @@ vim /etc/pacman.d/mirrorlist
 
 
 用包管理器pacman下载个vim或neovim方便调试下载dhcpcd不然重启以后无法动态分配IP而导致无法安装桌面环境再下个intel-ucode(不是intel U不用下)双系统需求下os-prober
+
 必须下efibootmgr 和 grub
 
 
 
 输入grub-install --force --recheck /dev/sda
+
 grub-mkconfig -o /boot/grub/grub.cfg
-键入systemctl enable dhcpcd.service来获取dhcp动态分配ip地址服务
+
+输入systemctl enable dhcpcd.service来获取dhcp动态分配ip地址服务
 再输入exit退出系统
+
 使用umount -R /mnt卸载已挂载的分区
+
 使用reboot重启
 
 
@@ -235,11 +242,11 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 vim /etc/hostname
 输入hostname
-
+```
 127.0.0.1 localhost
 ::1 localhost
 127.0.1.1 主机名.localdomain 主机名
-
+```
 #### 中文字体设置
 
 vim /etc/locale.gen找到en_US.UTF-8和zh_CN.UTF-8去掉#:wq
@@ -265,12 +272,11 @@ timedatectl set-ntp true
 至少需要一种中文字体：pacman -S wqy-microhei
 vim ~/.xprofile
 输入
+```
 export LANG=zh_CN.UTF-8
-
 export LANGUAGE=zh_CN:en_US
-
 export LC_CTYPE=en_US.UTF-8
-
+```
 再cp ~/.xprofile /home/你的用户名
 
 #### 桌面环境安装
@@ -323,10 +329,9 @@ vim /etc/hosts
 
 输入：
 
-127.0.0.1 localhost
+``` 127.0.0.1 localhost
 ::1 localhost
 127.0.1.1 a.localdomain a（原有hosts配置）
-
 192.30.253.112 github.com
 151.101.88.249 github.global.ssl.fastly.net
 192.30.253.113    github.com
@@ -338,7 +343,8 @@ vim /etc/hosts
 185.31.16.185 github.global.ssl.fastly.net
 74.125.128.95 ajax.googleapis.com
 151.101.76.249 http://global-ssl.fastly.net
-192.30.255.112 http://github.com  #此处112还是113根据自己的情况调整 方法(ping 一下github，会有显示)
+192.30.255.112 http://github.com  #此处112还是113根据自己的情况调整 方法:ping 一下github，会有显示)
+```
 
 
 
@@ -365,11 +371,10 @@ vim /etc/hosts
 **解决方案**：*换DNS*
 
 vim /etc/resolv.conf
-
->nameserver 223.6.6.6
-
->nameserver 8.8.8.8 
-
+```
+nameserver 223.6.6.6
+nameserver 8.8.8.8 
+```
 
 ## 使用方法篇
 
@@ -408,13 +413,13 @@ pacman -Rsn package_name
 编辑/etc/pacman.conf  with your favorite editor
 
 在文件最后添加如下内容：
-
+```
 [archlinuxcn]
 
 SigLevel = Optional TrustedOnly
 
 Server = http://mirrors.163.com/archlinux-cn/$arch
-
+```
 保存退出刷新pacman数据库   sudo pacman -Syy
 
 
@@ -451,7 +456,7 @@ ssr stop
 
 
 
-
+```
 [root@localhost ~]# ssr config 		# 配置文件路径 /usr/local/share/shadowsocksr/config.json
 {
     "server": "0..0.0.0",	// ssr服务器ip
@@ -478,8 +483,7 @@ ssr stop
     "redirect": "",
     "fast_open": false
 }
-
-
+```
 
 
 
@@ -501,7 +505,7 @@ git remote add origin 仓库地址（没有添加ssh key建议使用 https地址
 邮箱设置git config --global user.email [email]
 可是当你第一次push的时候一般会遇到如下报错：
 这种错误的主要原因是你的远程仓库的内容有改动但是你本地并没有拉去最新的代码所以会报错。
-
+```
 $ git push origin master
 To https://github.com/yuanchao614/wecoder.git
  ! [rejected]        master -> master (non-fast-forward)
@@ -515,7 +519,7 @@ hint: its remote counterpart. Integrate the remote changes (e.g.
 hint: 'git pull ...') before pushing again.
 
 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
-
+```
 解决方案： git pull origin master --allow-unrelated-histories
 
 然后建议做完上一步之后再重新：
@@ -534,11 +538,15 @@ git push origin master
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 使用：
+```
 call plug#begin('~/.vim/plugged')
 
 Plug 'vim-airline/vim-airline'
 
 call plug#end()
+```
+说明：在~/.vimrc 中插入以上片段，在call内输入Plug '地址'
+再:PlugInstall即可安装
 
 
 命令：PlugInstall
