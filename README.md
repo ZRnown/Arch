@@ -201,7 +201,7 @@ mount /dev/sdb3 /mnt
 
 接着使用vim更改镜像源以达到加速目的
 
-[![Ramc9fdcee5efc1f13c.md.gif](https://file.moetu.org/images/2020/01/27/Ramc9fdcee5efc1f13c.md.gif)](https://moetu.org/image/iidEk)
+![](https://raw.githubusercontent.com/ZRnown/Picture/master/img/Ram.gif)
 
 vim /etc/pacman.d/mirrorlist
 
@@ -232,6 +232,8 @@ genfstab /mnt >> /mnt/etc/fstab
 
 arch-chroot /mnt # 离开liveCD切换到linux系统
 ```
+
+双系统需要安装 os-prober 以及 ntfs-3g 后 grub 生成引导入口时就会检测出 Win10
 
 用包管理器pacman下载个vim或neovim方便调试，下载dhcpcd不然重启以后无法动态分配IP而导致没网无法安装桌面环境，再下个intel-ucode(如果你是intel的CPU的话) 有双系统需求要下os-prober
 
