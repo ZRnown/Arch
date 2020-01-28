@@ -74,7 +74,7 @@
 
 可以用磁力和种子下载，打开你的迅雷，咱随便挑一个下载。
 
-在下载过程中，咱要下个磁盘刻录工具，这里我使用的[USBWriter](https://sourceforge.net/projects/usbwriter/)，当然你也可以用[rufus](https://rufus-usb.cn.uptodown.com/windows)，看个人喜好。然后把它下下来。打开它，大概是这个样子，比较简陋，但五脏俱全，也很好用，我喜欢。它上面英文差不多就是红字那个的意思，我给它翻译的一遍。
+在下载过程中，咱要下个磁盘刻录工具，这里我使用的[USBWriter](https://sourceforge.net/projects/usbwriter/)，当然你也可以用[rufus](https://rufus-usb.cn.uptodown.com/windows)，看个人喜好。然后把它下下来。打开它，大概是这个样子，比较简陋，但五脏俱全。它上面英文差不多就是红字那个的意思，我给它翻译的一遍。
 
 ![1njIDe.png](https://s2.ax1x.com/2020/01/27/1njIDe.png)
 
@@ -128,7 +128,7 @@
 一个swap
 一个系统盘
 
->EFI system : EFI是引导分区，它在你磁盘的最前面，每次开机最先被磁头读写到。我把Archlinux比作景点，引导分区比作导游，你想要进入景点必须要有导游带着你啊对吧。在你电脑开机以后，你的导游(引导分区)带你进景点(Archlinux)。如果没有导游你就无法进入景区，那你就开不了机咯，简单易懂。
+>EFI system : EFI是引导分区，它在你磁盘的最前面，每次开机最先被磁头读写到。我把Archlinux比作景点，引导分区比作导游，你想要进入景点必须要有导游带着你啊对吧。在你电脑开机以后，你的导游(引导分区)带你进景点(Archlinux)。如果没有导游你就无法进入景区。
 
 
 >Swap : Swap分区（即交换区）在系统的物理内存不够用的时候，把硬盘空间中的一部分空间释放出来，以供当前运行的程序使用。那些被释放的空间可能来自一些很长时间没有什么操作的程序，这些被释放的空间被临时保存到Swap分区中，等到那些程序要运行时，再从Swap分区中恢复保存的数据到内存中。
@@ -220,14 +220,18 @@ vim /etc/pacman.d/mirrorlist
 
 
 
-接着再安装系统pacstrap /mnt base linux base-devel
+接着再安装系统
+```
+pacstrap /mnt base linux base-devel
 
-需要在网络环境下安装！
+# 需要在网络环境下安装！
 
-安装完成后输入genfstab /mnt >> /mnt/etc/fstab
+# 安装完成后输入
 
-arch-chroot /mnt 离开liveCD切换到linux系统
+genfstab /mnt >> /mnt/etc/fstab
 
+arch-chroot /mnt # 离开liveCD切换到linux系统
+```
 
 用包管理器pacman下载个vim或neovim方便调试，下载dhcpcd不然重启以后无法动态分配IP而导致没网无法安装桌面环境，再下个intel-ucode(如果你是intel的CPU的话) 有双系统需求要下os-prober
 
@@ -237,9 +241,18 @@ pacman -S vim neovim dhcpcd intel-ucode os-prober efibootmgr grub
 ```
 安装完成后
 
-输入grub-install --force --recheck /dev/sda
+输入
+```
+grub-install --force --recheck /dev/sda
 
-和grub-mkconfig -o /boot/grub/grub.cfg
+grub-mkconfig -o /boot/grub/grub.cfg
+```
+如果 
+```
+warning failed to connect to lvmetad，falling back to device scanning 
+```
+。vim /etc/lvm/lvm.conf,找到 use_lvmetad = 1 将1修改为0，保存，重新配置 grub。
+
 
 输入systemctl enable dhcpcd.service来获取dhcp动态分配ip地址服务
 再输入exit退出系统
@@ -281,13 +294,13 @@ vim /etc/locale.gen找到en_US.UTF-8和zh_CN.UTF-8去掉#:wq
 
 
 #### 时区设置
-
+```
 ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 hwclock --systohc --utc
 
 timedatectl set-ntp true
-
+```
 
 #### 系统本地化设置
 至少需要一种中文字体：pacman -S wqy-microhei
@@ -305,19 +318,19 @@ export LC_CTYPE=en_US.UTF-8
 输入pacman -S xorg xterm xorg-xinit sddm wqy-zenhei wqy-microhei plasma kde-applications xdg-user-dirs坐等下载
 
 下载完成之后开启服务
+```
 xdg-user-dirs-update
 
 sddm --example-config >/etc/sddm.conf
 
 systemctl enable sddm.service
-
+```
 #### vmware&nbsp;tools快速安装：
-
+```
 1. git clone https://github.com/rasa/vmware-tools-patches.git
 2. cd vmware-tools-patches
 3. ./patched-open-vm-tools.sh
-
-
+```
 ## 疑难解答篇
 
 ### U盘启动盘如何恢复原样：
@@ -330,19 +343,21 @@ select disk 2选择到你的U盘
 成功！
 
 #### 虚拟机无法更改分辨率解决方案
+```
 1.pacman -S xorg xorg-xinit xf86-video-vesa xf86-video-vmware  xf86-input-vmmouse open-vm-tools gtkmm
 
 2.systemctl enable vmtoolsd.service vmware-vmblock-fuse.service
 
 3.reboot
-
+```
 
 
 #### git出现443解决方案：
 先设置git 账号密码
+```
 git config --global --unset http.proxy
 git config --global --unset https.proxy
-
+```
 然后
 
 
@@ -457,6 +472,7 @@ Yaourt 不可使用可以更换镜像源再 sudo pacman -Syy
 #### SSR须知
 安装：
 需要本地git 环境
+```
 yum install -y git
 
 git clone https://github.com/SAMZONG/gfwlist2privoxy.git
@@ -469,10 +485,12 @@ chmod +x /usr/local/bin/ssr
 
 
 ssr install
-
+```
 
 启动/关闭
+
 ssr start
+
 ssr stop
 
 
